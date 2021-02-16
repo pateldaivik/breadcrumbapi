@@ -60,13 +60,19 @@ app.get("/path/*", (req, res) => {
   };
 
   const getChild = () => {
-    if (url.length === 1 && url[0] === "root") {
-      return root.children;
-    } else {
-      for (let i = 1; i < url.length; i++) {
-        path = getVal(path[url[i]]);
+    try {
+      if (url.length === 1 && url[0] === "root") {
+        return root.children;
+      } else {
+        for (let i = 1; i < url.length; i++) {
+          path = getVal(path[url[i]]);
+        }
+        return path;
       }
-      return path;
+    } catch {
+      (error) => {
+        return res.status(500).json({ error: "server error" });
+      };
     }
   };
 
